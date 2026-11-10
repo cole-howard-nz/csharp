@@ -1,0 +1,14 @@
+d:\-- cole\Personal\Development\C#\relearn\playground\bin\Debug\net10.0\playground.exe
+d:\-- cole\Personal\Development\C#\relearn\playground\bin\Debug\net10.0\playground.deps.json
+d:\-- cole\Personal\Development\C#\relearn\playground\bin\Debug\net10.0\playground.runtimeconfig.json
+d:\-- cole\Personal\Development\C#\relearn\playground\bin\Debug\net10.0\playground.dll
+d:\-- cole\Personal\Development\C#\relearn\playground\bin\Debug\net10.0\playground.pdb
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.GeneratedMSBuildEditorConfig.editorconfig
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.AssemblyInfoInputs.cache
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.AssemblyInfo.cs
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.csproj.CoreCompileInputs.cache
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.dll
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\refint\playground.dll
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.pdb
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\playground.genruntimeconfig.cache
+d:\-- cole\Personal\Development\C#\relearn\playground\obj\Debug\net10.0\ref\playground.dll
