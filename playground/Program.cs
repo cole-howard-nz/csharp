@@ -10,6 +10,7 @@ public class Program
     await DoAsyncStuff();
     PatternMatchingSwitch.Run();
     Inheritance.Run();
+    Exceptions.Run();
   }
 
   public static async Task DoAsyncStuff()
