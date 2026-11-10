@@ -12,6 +12,7 @@ public class Program
     Inheritance.Run();
     Exceptions.Run();
     DependencyInjection.Run();
+    ResultsDemo.Run();
   }
 
   public static async Task DoAsyncStuff()
