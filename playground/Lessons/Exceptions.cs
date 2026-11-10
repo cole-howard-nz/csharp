@@ -8,12 +8,13 @@ public static class Exceptions
         Order o2 = new(Id: 2, Item: "Void Peanut Butter", Quantity: -1, UnitPrice: 5.99m);
         Order o3 = new(Id: 3, Item: "Free Peanut Butter", Quantity: 1, UnitPrice: -2.50m);
         Order o4 = new(Id: 4, Item: "Free Peanut Butter", Quantity: 0, UnitPrice: 5.99m);
+        Order o5 = new(Id: 5, Item: "Expensive Peanut Butter", Quantity: 1, UnitPrice: 15.99m);
 
-        List<Order> list = new List<Order> { o1, o2, o3, o4 };
-
-        try
+        List<Order> list = [o1, o2, o3, o4, o5];
+        
+        foreach (Order o in list)
         {
-            foreach (Order o in list)
+            try
             {
                 DiscountPricer discountPricer = new(Percent: 0.1m);
                 TaxPricer taxPricer = new(Rate: 0.2m);
@@ -21,18 +22,18 @@ public static class Exceptions
                 Console.WriteLine($"Total from discount pricer is ${discountPricer.Total(o)}");
                 Console.WriteLine($"Total from tax pricer is ${taxPricer.Total(o)}");
             }
-        }
-        catch (InvalidOrderException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        catch (Exception ex) when (ex is ArgumentException)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        finally
-        {
-            Console.WriteLine("Pricing attempt finished");
+            catch (InvalidOrderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex) when (ex is ArgumentException)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Pricing attempt finished");
+            }
         }
     }
 }
