@@ -4,17 +4,16 @@ public class Program
 {
   public static async Task Main()
   {
-    DoBasics();
-    DoCollectionsLINQ();
-    DoRecordsClassesInterfaces();
+    Basics.Run();
+    CollectionsLINQ.Run();
+    RecordsClassesInterfaces.Run();
     await DoAsyncStuff();
-    DoPatternMatchingSwitch();
+    PatternMatchingSwitch.Run();
+    Inheritance.Run();
+    Exceptions.Run();
+    DependencyInjection.Run();
+    ResultsDemo.Run();
   }
-
-  public static void DoBasics() => Basics.Run();
-  public static void DoCollectionsLINQ() => CollectionsLINQ.Run();
-  public static void DoRecordsClassesInterfaces() => RecordsClassesInterfaces.Run();
-  public static void DoPatternMatchingSwitch() => PatternMatchingSwitch.Run();
 
   public static async Task DoAsyncStuff()
   {
