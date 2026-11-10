@@ -16,8 +16,8 @@ public static class Exceptions
         {
             try
             {
-                DiscountPricer discountPricer = new(Percent: 0.1m);
-                TaxPricer taxPricer = new(Rate: 0.2m);
+                DiscountPricer discountPricer = new(percent: 0.1m);
+                TaxPricer taxPricer = new(rate: 0.2m);
 
                 Console.WriteLine($"Total from discount pricer is ${discountPricer.Total(o)}");
                 Console.WriteLine($"Total from tax pricer is ${taxPricer.Total(o)}");

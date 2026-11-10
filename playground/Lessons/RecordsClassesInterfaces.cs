@@ -10,7 +10,7 @@ public static class RecordsClassesInterfaces
     Console.WriteLine(order);
     Console.WriteLine(bigger);
 
-    IPricer pricer = new TaxPricer(Rate: 0.15m);
+    IPricer pricer = new TaxPricer(rate: 0.15m);
     Console.WriteLine(pricer.Total(order));
     Console.WriteLine(pricer.Total(bigger));  
   }

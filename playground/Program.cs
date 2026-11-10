@@ -11,6 +11,7 @@ public class Program
     PatternMatchingSwitch.Run();
     Inheritance.Run();
     Exceptions.Run();
+    DependencyInjection.Run();
   }
 
   public static async Task DoAsyncStuff()

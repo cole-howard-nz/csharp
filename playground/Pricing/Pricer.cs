@@ -15,7 +15,7 @@ public abstract class Pricer : IPricer
     {
         if (o.Quantity <= 0 || o.UnitPrice < 0)
         {
-            throw new InvalidOrderException(Message: $"Pricer.Validate failed: {o.Id}");
+            throw new InvalidOrderException(message: $"Pricer.Validate failed: {o.Id}");
         }
     }
 }

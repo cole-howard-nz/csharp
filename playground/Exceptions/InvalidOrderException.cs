@@ -1,6 +1,3 @@
 namespace Playground;
 
-public class InvalidOrderException(string Message) : Exception(Message)
-{
-    
-}
+public class InvalidOrderException(string message) : Exception(message);

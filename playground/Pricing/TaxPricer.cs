@@ -1,6 +1,6 @@
 namespace Playground;
 
-public class TaxPricer(decimal Rate) : Pricer
+public class TaxPricer(decimal rate) : Pricer
 {
-  public override decimal Total(Order o) => Subtotal(o) * (1 + Rate);
+  public override decimal Total(Order o) => Subtotal(o) * (1 + rate);
 }
