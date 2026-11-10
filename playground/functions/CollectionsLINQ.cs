@@ -1,6 +1,6 @@
 namespace Playground;
 
-public class CollectionsLINQ
+public static class CollectionsLINQ
 {
   public static void Run()
   {

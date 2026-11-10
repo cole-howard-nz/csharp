@@ -1,6 +1,6 @@
 namespace Playground;
 
-public class Basics
+public static class Basics
 {
   public static void Run()
   {
@@ -15,7 +15,7 @@ public class Basics
 
     if (nickname?.Length > 0)
     {
-      Console.WriteLine($"Your nickname is: {nickname} (length: {nickname?.Length})");
+      Console.WriteLine($"Your nickname is: {nickname} (length: {nickname.Length})");
     } 
     else
     {

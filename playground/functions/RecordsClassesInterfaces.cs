@@ -1,26 +1,7 @@
 namespace Playground;
 
-public class RecordsClassesInterfaces
+public static class RecordsClassesInterfaces
 {
-  public record Order
-  (
-    int Id,
-    string Item,
-    int Quantity,
-    decimal UnitPrice
-  );
-
-  public interface IPricer
-  {
-    decimal Total(Order o);
-  }
-
-  public class TaxPricer(decimal rate) : IPricer
-  {
-    public decimal Total(Order o) => 
-      o.Quantity * o.UnitPrice * (1 + rate);   
-  }
-
   public static void Run()
   {
     var order = new Order(Id: 1, Item: "Widget", Quantity: 3, UnitPrice: 9.99m);

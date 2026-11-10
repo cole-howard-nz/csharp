@@ -8,11 +8,13 @@ public class Program
     DoCollectionsLINQ();
     DoRecordsClassesInterfaces();
     await DoAsyncStuff();
+    DoPatternMatchingSwitch();
   }
 
   public static void DoBasics() => Basics.Run();
   public static void DoCollectionsLINQ() => CollectionsLINQ.Run();
   public static void DoRecordsClassesInterfaces() => RecordsClassesInterfaces.Run();
+  public static void DoPatternMatchingSwitch() => PatternMatchingSwitch.Run();
 
   public static async Task DoAsyncStuff()
   {
