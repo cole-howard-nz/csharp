@@ -2,14 +2,19 @@ namespace Playground;
 
 public class OrderService(IPricer pricer)
 {
-    public decimal Checkout(Order o) => Math.Round(pricer.Total(o), 2);
-    public Result<decimal> TryCheckout(Order o)
+    public async Task<decimal> CheckoutAsync(Order o, CancellationToken ct)
+    {
+        decimal total = await pricer.TotalAsync(o, ct);
+        return Math.Round(total, 2, MidpointRounding.AwayFromZero);
+    }
+
+    public async Task<Result<decimal>> TryCheckoutAsync(Order o, CancellationToken ct)
     {
         try
         {
-            decimal checkout = Checkout(o);
-            return Result<decimal>.Ok(checkout);
-        } catch (InvalidOrderException ex)
+            return Result<decimal>.Ok(await CheckoutAsync(o, ct));
+        } 
+        catch (InvalidOrderException ex)
         {
             return Result<decimal>.Fail(ex.Message);
         }

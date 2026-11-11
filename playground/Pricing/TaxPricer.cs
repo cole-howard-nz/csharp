@@ -2,5 +2,5 @@ namespace Playground;
 
 public class TaxPricer(decimal rate) : Pricer
 {
-  public override decimal Total(Order o) => Subtotal(o) * (1 + rate);
+  public override Task<decimal> TotalAsync(Order o, CancellationToken ct) => Task.FromResult(Subtotal(o) * (1 + rate));
 }

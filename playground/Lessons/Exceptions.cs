@@ -2,7 +2,7 @@ namespace Playground;
 
 public static class Exceptions
 {
-    public static void Run()
+    public static async Task Run()
     {
         Order o1 = new(Id: 1, Item: "Peanut Butter", Quantity: 1, UnitPrice: 5.99m);
         Order o2 = new(Id: 2, Item: "Void Peanut Butter", Quantity: -1, UnitPrice: 5.99m);
@@ -19,8 +19,8 @@ public static class Exceptions
                 DiscountPricer discountPricer = new(percent: 0.1m);
                 TaxPricer taxPricer = new(rate: 0.2m);
 
-                Console.WriteLine($"Total from discount pricer is ${discountPricer.Total(o)}");
-                Console.WriteLine($"Total from tax pricer is ${taxPricer.Total(o)}");
+                Console.WriteLine($"Total from discount pricer is ${await discountPricer.TotalAsync(o, CancellationToken.None)}");
+                Console.WriteLine($"Total from tax pricer is ${await taxPricer.TotalAsync(o, CancellationToken.None)}");
             }
             catch (InvalidOrderException ex)
             {

@@ -2,7 +2,7 @@ namespace Playground;
 
 public class ResultsDemo()
 {
-    public static void Run()
+    public static async void Run()
     {
         Order o1 = new(Id: 1, Item: "Peanut Butter", Quantity: 1, UnitPrice: 5.99m);
         Order o2 = new(Id: 2, Item: "Void Peanut Butter", Quantity: -1, UnitPrice: 5.99m);
@@ -12,7 +12,7 @@ public class ResultsDemo()
 
         foreach (Order o in new[] { o1, o2 })
         {
-            Result<decimal> result = os1.TryCheckout(o);
+            Result<decimal> result = await os1.TryCheckoutAsync(o, CancellationToken.None);
 
             if (result.IsSuccess)
             {

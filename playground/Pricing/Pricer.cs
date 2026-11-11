@@ -2,7 +2,7 @@ namespace Playground;
 
 public abstract class Pricer : IPricer
 {
-    public abstract decimal Total(Order o);
+    public abstract Task<decimal> TotalAsync(Order o, CancellationToken ct);
     public virtual string Name => GetType().Name;
     
     protected decimal Subtotal(Order o)
