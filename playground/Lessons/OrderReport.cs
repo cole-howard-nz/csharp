@@ -1,5 +1,3 @@
-using System.Data.Common;
-
 namespace Playground;
 
 public static class OrderReport
@@ -25,7 +23,7 @@ public static class OrderReport
             .Select(g => new {
                 g.Key,
                 Units = g.Sum(o => o.Quantity),
-                Revenue = g.Sum(o => o.UnitPrice)
+                Revenue = g.Sum(o => o.UnitPrice * o.Quantity)
             })
             .OrderByDescending(o => o.Revenue);
         foreach (var r in report)
@@ -33,15 +31,15 @@ public static class OrderReport
             Console.WriteLine($"{r.Key} - {r.Units} units, {r.Revenue:C}");
         }
 
-        Order? mostValuable = SampleData.Orders.MaxBy(o => o.UnitPrice);
+        Order? mostValuable = SampleData.Orders.MaxBy(o => o.UnitPrice * o.Quantity);
         Console.WriteLine($"Most valuable: {mostValuable}");
 
-        decimal numberOfValidOrders = validOrders.Count;
+        int numberOfValidOrders = validOrders.Count;
         Console.WriteLine($"Number of valid orders: {numberOfValidOrders}");
 
         bool doInvalidOrdersExist = SampleData.Orders
             .Any(o => o.Quantity <= 0 || o.UnitPrice < 0);
-        decimal numberOfInvalidOrders = SampleData.Orders
+        int numberOfInvalidOrders = SampleData.Orders
             .Where(o => o.Quantity <= 0 || o.UnitPrice < 0)
             .ToList()
             .Count;
@@ -63,7 +61,8 @@ public static class OrderReport
         }
 
         var query2 = SampleData.Orders.Where(o => o.Quantity > 3).ToList();
-        SampleData.Orders.Add(popcorn);
+        Order popcorn2 = new(Id: 12, Item: "Popcorn Again", Quantity: 5, UnitPrice: 4.5m);
+        SampleData.Orders.Add(popcorn2);
         foreach (Order o in query2)
         {
             Console.WriteLine(o);
