@@ -13,6 +13,7 @@ public class Program
     Exceptions.Run();
     DependencyInjection.Run();
     ResultsDemo.Run();
+    OrderReport.Run();
   }
 
   public static async Task DoAsyncStuff()
