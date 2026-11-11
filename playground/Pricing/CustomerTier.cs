@@ -2,5 +2,8 @@ namespace Playground;
 
 public enum CustomerTier
 {
-    Standard, Silver, Gold
+    Standard,
+    Silver,
+    Gold,
+    Platinum
 }
