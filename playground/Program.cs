@@ -16,6 +16,7 @@ public class Program
     OrderReport.Run();
     await EnumDemo.Run();
     await AsyncPricing.Run();
+    await Container.Run();
 
     // Test zone
     ScratchPad.Run();
