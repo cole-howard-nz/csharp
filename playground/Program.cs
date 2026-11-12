@@ -6,15 +6,16 @@ public class Program
   {
     Basics.Run();
     CollectionsLINQ.Run();
-    RecordsClassesInterfaces.Run();
+    await RecordsClassesInterfaces.Run();
     AsyncStuff.Run();
     PatternMatchingSwitch.Run();
     Inheritance.Run();
-    Exceptions.Run();
+    await Exceptions.Run();
     DependencyInjection.Run();
     ResultsDemo.Run();
     OrderReport.Run();
-    EnumDemo.Run();
+    await EnumDemo.Run();
+    await AsyncPricing.Run();
 
     // Test zone
     ScratchPad.Run();
