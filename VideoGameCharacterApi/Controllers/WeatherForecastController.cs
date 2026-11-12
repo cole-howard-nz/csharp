@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace VideoGameCharacterApi.Controllers;
 
 [ApiController]
