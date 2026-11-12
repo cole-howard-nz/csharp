@@ -2,5 +2,5 @@ namespace Playground;
 
 public interface IPricer
 {
-  decimal Total(Order o);
+  Task<decimal> TotalAsync(Order o, CancellationToken ct);
 }
