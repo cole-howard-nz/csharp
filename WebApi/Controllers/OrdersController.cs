@@ -6,7 +6,6 @@ using WebApi.DTO;
 
 namespace WebApi.Controllers;
 
-
 [ApiController]
 [Route("api/[controller]")]
 public class OrdersController(OrderStore orderStore) : ControllerBase
