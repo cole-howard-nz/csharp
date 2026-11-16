@@ -11,21 +11,17 @@ namespace GameApi.Controllers;
 public class CharacterController(CharacterStore store) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<CharacterDto>> GetAll([FromQuery] CharacterClass? characterClass, [FromQuery] int? minLevel)
+    public ActionResult<IEnumerable<CharacterDto>> GetAll([FromQuery(Name = "class")] CharacterClass? characterClass, [FromQuery] int? minLevel)
     {
         IEnumerable<Character> characters = store.All();
 
-        if (characterClass is not null && minLevel is not null)
+        if (characterClass is not null)
         {
-            characters.Select(c => c.Class == characterClass && c.Level >= minLevel);
+            characters = characters.Where(c => c.Class == characterClass);
         } 
-        else if (characterClass is not null)
+        if (minLevel is not null)
         {
-            characters.Select(c => c.Class == characterClass);
-        } 
-        else if (minLevel is not null)
-        {
-            characters.Select(c => c.Level >= minLevel);
+            characters = characters.Where(c => c.Level >= minLevel);
         }
 
         IEnumerable<CharacterDto> result = characters.Select(c => c.ToDto());

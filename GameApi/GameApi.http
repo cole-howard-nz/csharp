@@ -1,6 +1,77 @@
-@GameApi_HostAddress = http://localhost:5169
+@host = http://localhost:5169
 
-GET {{GameApi_HostAddress}}/weatherforecast/
-Accept: application/json
+### 1. List everything
+GET {{host}}/api/character
 
-###
+### 2. Filter by class
+GET {{host}}/api/character?class=Mage
+
+### 3. Filter by minimum level
+GET {{host}}/api/character?minLevel=5
+
+### 4. Both filters at once
+GET {{host}}/api/character?class=Warrior&minLevel=5
+
+### 5. A class that does not exist
+GET {{host}}/api/character?class=Wizard
+
+### 6. One character
+GET {{host}}/api/character/2
+
+### 7. A missing character
+GET {{host}}/api/character/99
+
+### 8. Create (valid)
+POST {{host}}/api/character
+Content-Type: application/json
+
+{ "name": "Kira", "class": "Rogue", "strength": 10, "intelligence": 12 }
+
+### 9. Create (every rule broken)
+POST {{host}}/api/character
+Content-Type: application/json
+
+{ "name": "Al", "class": 99, "strength": 50, "intelligence": 0 }
+
+### 10. Create (class word that does not exist)
+POST {{host}}/api/character
+Content-Type: application/json
+
+{ "name": "Merlin", "class": "Wizard", "strength": 5, "intelligence": 5 }
+
+### 11. Create (trying to cheat)
+POST {{host}}/api/character
+Content-Type: application/json
+
+{ "name": "Cheater", "class": "Warrior", "strength": 20, "intelligence": 20,
+  "level": 99, "hitpoints": 9999, "adminNote": "I am an admin" }
+
+### 12. Update (valid)
+PUT {{host}}/api/character/1
+Content-Type: application/json
+
+{ "name": "Brynn the Bold", "strength": 20, "intelligence": 5 }
+
+### 13. Update a missing character
+PUT {{host}}/api/character/99
+Content-Type: application/json
+
+{ "name": "Ghost", "strength": 5, "intelligence": 5 }
+
+### 14. Update (invalid)
+PUT {{host}}/api/character/1
+Content-Type: application/json
+
+{ "name": "", "strength": 0, "intelligence": 21 }
+
+### 15. Level up
+POST {{host}}/api/character/3/levelup
+
+### 16. Level up a missing character
+POST {{host}}/api/character/99/levelup
+
+### 17. Delete
+DELETE {{host}}/api/character/3
+
+### 18. Delete the same one again
+DELETE {{host}}/api/character/3
