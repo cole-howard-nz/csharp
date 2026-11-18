@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using GameApi.Data;
 
@@ -12,6 +13,10 @@ builder.Services.AddControllers()
 );
 
 builder.Services.AddSingleton<CharacterStore>();
+
+builder.Services.AddDbContext<GameDbContext>(options => 
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
