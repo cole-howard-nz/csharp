@@ -3,6 +3,11 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Database files
+gameapi.db
+gameapi.db-shm
+gameapi.db-wal
+
 # dotenv files
 .env
 
