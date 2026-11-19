@@ -12,8 +12,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
 );
 
-builder.Services.AddSingleton<CharacterStore>();
-
 builder.Services.AddDbContext<GameDbContext>(options => 
     options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );

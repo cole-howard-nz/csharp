@@ -16,7 +16,7 @@ GET {{host}}/api/character?class=Warrior&minLevel=5
 GET {{host}}/api/character?class=Wizard
 
 ### 6. One character
-GET {{host}}/api/character/2
+GET {{host}}/api/character/1
 
 ### 7. A missing character
 GET {{host}}/api/character/99
@@ -50,7 +50,7 @@ Content-Type: application/json
 PUT {{host}}/api/character/1
 Content-Type: application/json
 
-{ "name": "Brynn the Bold", "strength": 20, "intelligence": 5 }
+{ "name": "Brynn the Bold", "strength": 19, "intelligence": 5 }
 
 ### 13. Update a missing character
 PUT {{host}}/api/character/99
