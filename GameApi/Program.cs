@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using GameApi.Data;
+using GameApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<GameDbContext>(options => 
     options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
+
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

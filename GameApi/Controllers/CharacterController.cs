@@ -1,32 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using GameApi.Models;
-using GameApi.Data;
 using GameApi.Dtos;
 using GameApi.Mapping;
 using Microsoft.EntityFrameworkCore;
+using GameApi.Services;
 
 namespace GameApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CharacterController(GameDbContext db) : ControllerBase
+public class CharacterController(ICharacterService service) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CharacterDto>>> GetAll(
         [FromQuery(Name = "class")] CharacterClass? characterClass, [FromQuery] int? minLevel, CancellationToken ct)
     {
-        IQueryable<Character> characters = db.Characters;
+        List<Character> characters = await service.GetAllAsync(characterClass, minLevel, ct);
 
         if (characterClass is not null)
         {
-            characters = characters.Where(c => c.Class == characterClass);
+            characters = [.. characters.Where(c => c.Class == characterClass)];
         } 
         if (minLevel is not null)
         {
-            characters = characters.Where(c => c.Level >= minLevel);
+            characters = [.. characters.Where(c => c.Level >= minLevel)];
         }
 
-        List<CharacterDto> result = await characters.Select(c => c.ToDto()).ToListAsync();
+        List<CharacterDto> result = [.. characters.Select(c => c.ToDto())];
+        
         return Ok(result);
     }
 
@@ -34,9 +35,7 @@ public class CharacterController(GameDbContext db) : ControllerBase
     public async Task<ActionResult<CharacterDto>> GetById(
         [FromRoute] int id, CancellationToken ct)
     {
-        Character? character = await db.Characters
-            .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == id, ct);
+        Character? character = await service.GetByIdAsync(id, ct);
 
         if (character is null)
         {
@@ -51,10 +50,9 @@ public class CharacterController(GameDbContext db) : ControllerBase
         [FromBody] CreateCharacterDto dto, CancellationToken ct)
     {
         Character character = dto.ToEntity();
-        db.Characters.Add(character);
-        await db.SaveChangesAsync(ct);
+        Character result = await service.CreateAsync(character, ct);
+        CharacterDto characterDto = result.ToDto();
 
-        CharacterDto characterDto = character.ToDto();
         return CreatedAtAction(nameof(GetById), new { characterDto.Id }, characterDto);
     }
 
@@ -62,14 +60,13 @@ public class CharacterController(GameDbContext db) : ControllerBase
     public async Task<IActionResult> Update(
         [FromRoute] int id, [FromBody] UpdateCharacterDto dto, CancellationToken ct)
     {
-        Character? character = await db.Characters.FirstOrDefaultAsync(c => c.Id == id);
-        if (character is null)
+        bool success = await service.UpdateAsync(id, dto, ct);
+
+        if (!success)
         {
             return NotFound("Character not found.");
         }
     
-        dto.ApplyTo(character);
-        await db.SaveChangesAsync(ct);
         return NoContent();
     }
 
@@ -77,15 +74,12 @@ public class CharacterController(GameDbContext db) : ControllerBase
     public async Task<IActionResult> Delete(
         [FromRoute] int id, CancellationToken ct)
     {
-        Character? character = await db.Characters.FirstOrDefaultAsync(c => c.Id == id, ct);
+        bool success = await service.DeleteAsync(id, ct);
 
-        if (character is null)
+        if (!success)
         {
             return NotFound("Character not found.");
         }
-
-        db.Characters.Remove(character);
-        await db.SaveChangesAsync(ct);
 
         return NoContent();
     }
@@ -94,23 +88,21 @@ public class CharacterController(GameDbContext db) : ControllerBase
     public async Task<IActionResult> LevelUp(
         [FromRoute] int id, CancellationToken ct)
     {
-        Character? character = await db.Characters.FirstOrDefaultAsync(c => c.Id == id, ct);
+        (LevelUpResult Result, Character? Character) character = await service.LevelUpAsync(id, ct);
 
-        if (character is null)
+        if (character.Result is LevelUpResult.NotFound || character.Character is null)
         {
             return NotFound("Character not found.");
         }
 
-        if (character.Level >= 99)
+        if (character.Result is LevelUpResult.MaxLevel)
         {
             return Conflict(new { error = "Character is already max level." });
         }
 
-        character.Level += 1;
-        character.Hitpoints += 10;
+        character.Character.Level += 1;
+        character.Character.Hitpoints += 10;
 
-        await db.SaveChangesAsync(ct);
-
-        return Ok(character.ToDto());
+        return Ok(character.Character.ToDto());
     }
 }
