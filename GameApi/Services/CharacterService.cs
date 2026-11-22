@@ -11,7 +11,7 @@ public class CharacterService(GameDbContext db) : ICharacterService
     public async Task<List<Character>> GetAllAsync(
         CharacterClass? characterClass, int? minLevel, CancellationToken ct)
     {
-        IQueryable<Character> characters = db.Characters;
+        IQueryable<Character> characters = db.Characters.AsNoTracking();
 
         if (characterClass is not null)
         {
@@ -22,7 +22,7 @@ public class CharacterService(GameDbContext db) : ICharacterService
             characters = characters.Where(c => c.Level >= minLevel);
         }
 
-        List<Character> result = await characters.ToListAsync(ct);
+        List<Character> result = await characters.OrderBy(c => c.Id).ToListAsync(ct);
         return result;
     }
 
@@ -46,7 +46,7 @@ public class CharacterService(GameDbContext db) : ICharacterService
     public async Task<bool> UpdateAsync(
         int id, UpdateCharacterDto dto, CancellationToken ct)
     {
-        Character? character = await db.Characters.FirstOrDefaultAsync(c => c.Id == id);
+        Character? character = await db.Characters.FirstOrDefaultAsync(c => c.Id == id, ct);
         if (character is null)
         {
             return false;

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using GameApi.Models;
-using System.Runtime.Serialization;
 
 namespace GameApi.Data;
 

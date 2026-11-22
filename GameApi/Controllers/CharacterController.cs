@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using GameApi.Models;
 using GameApi.Dtos;
 using GameApi.Mapping;
-using Microsoft.EntityFrameworkCore;
 using GameApi.Services;
 
 namespace GameApi.Controllers;
@@ -16,16 +15,6 @@ public class CharacterController(ICharacterService service) : ControllerBase
         [FromQuery(Name = "class")] CharacterClass? characterClass, [FromQuery] int? minLevel, CancellationToken ct)
     {
         List<Character> characters = await service.GetAllAsync(characterClass, minLevel, ct);
-
-        if (characterClass is not null)
-        {
-            characters = [.. characters.Where(c => c.Class == characterClass)];
-        } 
-        if (minLevel is not null)
-        {
-            characters = [.. characters.Where(c => c.Level >= minLevel)];
-        }
-
         List<CharacterDto> result = [.. characters.Select(c => c.ToDto())];
         
         return Ok(result);
