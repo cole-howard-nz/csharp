@@ -14,7 +14,7 @@ builder.Services.AddControllers()
 );
 
 builder.Services.AddDbContext<GameDbContext>(options => 
-    options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 
 builder.Services.AddScoped<ICharacterService, CharacterService>();

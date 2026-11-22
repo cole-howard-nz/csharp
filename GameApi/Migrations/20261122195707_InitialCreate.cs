@@ -17,16 +17,16 @@ namespace GameApi.Migrations
                 name: "Characters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Class = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    Hitpoints = table.Column<int>(type: "INTEGER", nullable: false),
-                    Strength = table.Column<int>(type: "INTEGER", nullable: false),
-                    Intelligence = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    AdminNote = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Class = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Hitpoints = table.Column<int>(type: "int", nullable: false),
+                    Strength = table.Column<int>(type: "int", nullable: false),
+                    Intelligence = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AdminNote = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
