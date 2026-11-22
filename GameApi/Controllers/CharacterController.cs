@@ -100,9 +100,6 @@ public class CharacterController(ICharacterService service) : ControllerBase
             return Conflict(new { error = "Character is already max level." });
         }
 
-        character.Character.Level += 1;
-        character.Character.Hitpoints += 10;
-
         return Ok(character.Character.ToDto());
     }
 }
