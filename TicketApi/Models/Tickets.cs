@@ -1,0 +1,14 @@
+namespace TicketApi.Models;
+
+public class Tickets
+{
+    public int Id { get; set; }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public TicketPriority Priority { get; set; }
+    public TicketStatus Status { get; set; }
+    public int EstimateHours { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ResovledAt { get; set; }
+    public string? InternalNote { get; set; }
+}
