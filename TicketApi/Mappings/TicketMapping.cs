@@ -15,7 +15,7 @@ public static class TicketMapping
             Status: ticket.Status,
             EstimatedHours: ticket.EstimateHours,
             CreatedAt: ticket.CreatedAt,
-            ResolvedAt: ticket.ResovledAt,
+            ResolvedAt: ticket.ResolvedAt,
             UrgencyScore: ((int)ticket.Priority + 1) * ticket.EstimateHours
         );
     }

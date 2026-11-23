@@ -9,6 +9,6 @@ public class Ticket
     public TicketStatus Status { get; set; }
     public int EstimateHours { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime? ResovledAt { get; set; }
+    public DateTime? ResolvedAt { get; set; }
     public string? InternalNote { get; set; }
 }
