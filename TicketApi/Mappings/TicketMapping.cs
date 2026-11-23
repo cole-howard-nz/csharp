@@ -39,5 +39,4 @@ public static class TicketMapping
         ticket.Description = dto.Description;
         ticket.EstimateHours = dto.EstimatedHours;
     }
-    
 }

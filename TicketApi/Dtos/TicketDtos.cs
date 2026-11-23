@@ -39,6 +39,6 @@ public record UpdateTicketDto
     [Required, MaxLength(length: 1000)]
     string Description,
 
-    [Length(minimumLength: 1, maximumLength: 40)]
+    [Range(minimum: 1, maximum: 40)]
     int EstimatedHours
 );

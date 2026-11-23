@@ -22,7 +22,7 @@ public class TicketDbContext(DbContextOptions<TicketDbContext> options) : DbCont
             new Ticket { Id = 1, Title = "Printer jams on level 3", Description = "Paper jams every few pages.", Priority = TicketPriority.Medium, Status = TicketStatus.Open, EstimateHours = 2, CreatedAt = new DateTime(2026, 11, 01, 0, 0, 0, DateTimeKind.Utc), ResolvedAt = null, InternalNote = "Reported by facilities" },
             new Ticket { Id = 2, Title = "VPN drops every hour", Description = "Connection dies after about 60 minutes.", Priority = TicketPriority.High, Status = TicketStatus.InProgress, EstimateHours = 6, CreatedAt = new DateTime(2026, 11, 02, 0, 0, 0, DateTimeKind.Utc) },
             new Ticket { Id = 3, Title = "Cannot log in to payroll", Description = "Password reset email never arrives.", Priority = TicketPriority.Urgent, Status = TicketStatus.Open, EstimateHours = 3, CreatedAt = new DateTime(2026, 11, 03, 0, 0, 0, DateTimeKind.Utc), InternalNote = "Check mail relay first" },
-            new Ticket { Id = 4, Title = "Update desk monitor drivers", Description = "Drivers are two versions behind.", Priority = TicketPriority.Low, Status = TicketStatus.Resolved, EstimateHours = 1, CreatedAt = new DateTime(2026, 10, 28, 0, 0, 0, DateTimeKind.Utc), ResolvedAt = null }
+            new Ticket { Id = 4, Title = "Update desk monitor drivers", Description = "Drivers are two versions behind.", Priority = TicketPriority.Low, Status = TicketStatus.Resolved, EstimateHours = 1, CreatedAt = new DateTime(2026, 10, 28, 0, 0, 0, DateTimeKind.Utc), ResolvedAt = new DateTime(2026, 10, 30, 0, 0, 0, DateTimeKind.Utc) }
         );
     }
 }

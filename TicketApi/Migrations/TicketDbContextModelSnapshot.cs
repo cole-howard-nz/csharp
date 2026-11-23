@@ -107,6 +107,7 @@ namespace TicketApi.Migrations
                             Description = "Drivers are two versions behind.",
                             EstimateHours = 1,
                             Priority = "Low",
+                            ResolvedAt = new DateTime(2026, 10, 30, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = "Resolved",
                             Title = "Update desk monitor drivers"
                         });
