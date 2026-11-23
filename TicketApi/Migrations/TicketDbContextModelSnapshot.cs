@@ -65,7 +65,7 @@ namespace TicketApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
 
                     b.HasData(
                         new
