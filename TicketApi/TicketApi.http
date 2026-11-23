@@ -1,0 +1,64 @@
+@TicketApi_HostAddress = http://localhost:5201
+
+### 1. List everything
+GET {{TicketApi_HostAddress}}/api/ticket
+
+### 2. List tickets with High Priority
+GET {{TicketApi_HostAddress}}/api/ticket?priority=High
+
+### 3. List tickets with Open Status
+GET {{TicketApi_HostAddress}}/api/ticket?status=Open
+
+### 4. List tickets with Urgent Priority and Open Status
+GET {{TicketApi_HostAddress}}/api/ticket?priority=Urgent&status=Open
+
+### 5. Get ticket with id 2
+GET {{TicketApi_HostAddress}}/api/ticket/2
+
+### 6. Get ticket that doesn't exist
+GET {{TicketApi_HostAddress}}/api/ticket/5000
+
+### 7. Create new ticket (valid)
+POST {{TicketApi_HostAddress}}/api/ticket
+Content-Type: application/json
+
+{ "Title": "A new ticket", "Description": "Very interesting ticket", "Priority": "High", "EstimatedHours": 4 }
+
+### 8. Create new ticket (invalid)
+POST {{TicketApi_HostAddress}}/api/ticket
+Content-Type: application/json
+
+{ "Title": "Test", "Description": "Very interesting ticket", "Priority": "High", "EstimatedHours": 4 }
+
+### 9. Create new ticket (invalid)
+POST {{TicketApi_HostAddress}}/api/ticket
+Content-Type: application/json
+
+{ "Title": "Longer", "Description": "Very interesting ticket", "Priority": "High", "EstimatedHours": 41 }
+
+### 10. Update a ticket (valid)
+PUT {{TicketApi_HostAddress}}/api/ticket/1
+Content-Type: application/json
+
+{ "Title": "Longer", "Description": "Very interesting ticket", "EstimatedHours": 35 }
+
+### 11. Update a ticket (invalid)
+PUT {{TicketApi_HostAddress}}/api/ticket/1
+Content-Type: application/json
+
+{ "Title": "Longer", "Description": "Very interesting ticket" }
+
+### 12. Create a ticket to delete for 13
+POST {{TicketApi_HostAddress}}/api/ticket/
+Content-Type: application/json
+
+{ "Title": "A new ticket", "Description": "Very interesting ticket", "Priority": "High", "EstimatedHours": 4 }
+
+### 13. Delete a ticket (valid)
+DELETE {{TicketApi_HostAddress}}/api/ticket/7
+
+### 14. Delete a ticket (invalid)
+DELETE {{TicketApi_HostAddress}}/api/ticket/8
+
+### 15. Resolve a ticket (invalid)
+POST {{TicketApi_HostAddress}}/api/ticket/7/resolve
