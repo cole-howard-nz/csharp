@@ -18,4 +18,4 @@ public interface ITicketService
     Task<bool> UpdateAsync(int id, UpdateTicketDto dto, CancellationToken ct);
     Task<bool> DeleteAsync(int id, CancellationToken ct);
     Task<(ResolveResult resolveResult, Ticket? ticket)> ResolveAsync(int id, CancellationToken ct);
-};
+}
