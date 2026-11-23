@@ -13,10 +13,10 @@ public static class TicketMapping
             Description: ticket.Description,
             Priority: ticket.Priority,
             Status: ticket.Status,
-            EstimatedHours: ticket.EstimateHours,
+            EstimatedHours: ticket.EstimatedHours,
             CreatedAt: ticket.CreatedAt,
             ResolvedAt: ticket.ResolvedAt,
-            UrgencyScore: ((int)ticket.Priority + 1) * ticket.EstimateHours
+            UrgencyScore: ((int)ticket.Priority + 1) * ticket.EstimatedHours
         );
     }
 
@@ -26,7 +26,7 @@ public static class TicketMapping
         {
             Title = dto.Title,
             Description = dto.Description,
-            EstimateHours = dto.EstimatedHours,
+            EstimatedHours = dto.EstimatedHours,
             Priority = dto.Priority,
             Status = TicketStatus.Open,
             CreatedAt = DateTime.UtcNow
@@ -37,6 +37,6 @@ public static class TicketMapping
     {
         ticket.Title = dto.Title;
         ticket.Description = dto.Description;
-        ticket.EstimateHours = dto.EstimatedHours;
+        ticket.EstimatedHours = dto.EstimatedHours;
     }
 }

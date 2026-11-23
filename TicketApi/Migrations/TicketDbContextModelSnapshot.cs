@@ -38,7 +38,7 @@ namespace TicketApi.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("EstimateHours")
+                    b.Property<int>("EstimatedHours")
                         .HasColumnType("int");
 
                     b.Property<string>("InternalNote")
@@ -73,7 +73,7 @@ namespace TicketApi.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Paper jams every few pages.",
-                            EstimateHours = 2,
+                            EstimatedHours = 2,
                             InternalNote = "Reported by facilities",
                             Priority = "Medium",
                             Status = "Open",
@@ -84,7 +84,7 @@ namespace TicketApi.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(2026, 11, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Connection dies after about 60 minutes.",
-                            EstimateHours = 6,
+                            EstimatedHours = 6,
                             Priority = "High",
                             Status = "InProgress",
                             Title = "VPN drops every hour"
@@ -94,7 +94,7 @@ namespace TicketApi.Migrations
                             Id = 3,
                             CreatedAt = new DateTime(2026, 11, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Password reset email never arrives.",
-                            EstimateHours = 3,
+                            EstimatedHours = 3,
                             InternalNote = "Check mail relay first",
                             Priority = "Urgent",
                             Status = "Open",
@@ -105,7 +105,7 @@ namespace TicketApi.Migrations
                             Id = 4,
                             CreatedAt = new DateTime(2026, 10, 28, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Drivers are two versions behind.",
-                            EstimateHours = 1,
+                            EstimatedHours = 1,
                             Priority = "Low",
                             ResolvedAt = new DateTime(2026, 10, 30, 0, 0, 0, 0, DateTimeKind.Utc),
                             Status = "Resolved",

@@ -7,7 +7,7 @@ public class Ticket
     public required string Description { get; set; }
     public TicketPriority Priority { get; set; }
     public TicketStatus Status { get; set; }
-    public int EstimateHours { get; set; }
+    public int EstimatedHours { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
     public string? InternalNote { get; set; }

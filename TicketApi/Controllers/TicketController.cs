@@ -1,4 +1,3 @@
-using System.Formats.Asn1;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketApi.Data;
@@ -16,35 +15,33 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult<IEnumerable<TicketDto>>> GetAll(
         [FromQuery] TicketPriority? priority, [FromQuery] TicketStatus? status, CancellationToken ct)
     {
-        IQueryable<Ticket> tickets = db.Tickets;
-
-        bool validPriority = priority.HasValue && Enum.IsDefined(priority.Value);
-        bool validStatus = status.HasValue && Enum.IsDefined(status.Value);
-
-        if (validPriority)
-        {
-            tickets = tickets.Where(t => t.Priority == priority);
-        }
-
-        if (validStatus)
-        {
-            tickets = tickets.Where(t => t.Status == status);
-        }
-
-        if ((priority.HasValue && !validPriority) || (status.HasValue && !validStatus))
+        if ((priority.HasValue && !Enum.IsDefined(priority.Value)) || (status.HasValue && !Enum.IsDefined(status.Value)))
         {
             return BadRequest(error: "Invalid priority or status passed.");
         }
 
-        IEnumerable<TicketDto> result = await tickets.Select(t => t.ToDto()).ToListAsync(ct);
-        return Ok(result);
+        IQueryable<Ticket> query = db.Tickets.AsNoTracking();
+
+        if (priority is not null)
+        {
+            query = query.Where(t => t.Priority == priority);
+        }
+        
+        if (status is not null)
+        {
+            query = query.Where(t => t.Status == status);
+        }
+
+        List<Ticket> tickets = await query.OrderBy(t => t.Id).ToListAsync(ct);
+        List<TicketDto> ticketDtos = [.. tickets.Select(t => t.ToDto())];
+        return Ok(ticketDtos);
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<TicketDto>> GetById(
         [FromRoute] int id, CancellationToken ct)
     {
-        Ticket? ticket = await db.Tickets.FirstOrDefaultAsync(t => t.Id == id, ct);
+        Ticket? ticket = await db.Tickets.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id, ct);
 
         if (ticket is null)
         {
@@ -113,7 +110,7 @@ public class TicketController(TicketDbContext db) : ControllerBase
             return NotFound("Ticket not found.");
         }
 
-        if (ticket.Status is TicketStatus.Resolved || ticket.Status is TicketStatus.Closed)
+        if (ticket.Status is TicketStatus.Resolved or TicketStatus.Closed)
         {
             return Conflict("Ticket is already resolved or is closed.");
         }

@@ -33,10 +33,10 @@ public record CreateTicketDto
 
 public record UpdateTicketDto
 (
-    [Required, Length(minimumLength: 5, maximumLength: 100)]
+    [Required, StringLength(maximumLength: 100, MinimumLength = 5)]
     string Title,
     
-    [Required, MaxLength(length: 1000)]
+    [Required, StringLength(maximumLength: 1000)]
     string Description,
 
     [Range(minimum: 1, maximum: 40)]
