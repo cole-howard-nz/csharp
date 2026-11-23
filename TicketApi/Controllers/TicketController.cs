@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using TicketApi.Dtos;
 using TicketApi.Mappings;
@@ -12,13 +13,10 @@ public class TicketController(ITicketService service) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TicketDto>>> GetAll(
-        [FromQuery] TicketPriority? priority, [FromQuery] TicketStatus? status, CancellationToken ct)
+        [FromQuery] [EnumDataType(typeof(TicketPriority))] TicketPriority? priority, 
+        [FromQuery] [EnumDataType(typeof(TicketStatus))] TicketStatus? status, 
+        CancellationToken ct)
     {
-        if ((priority.HasValue && !Enum.IsDefined(priority.Value)) || (status.HasValue && !Enum.IsDefined(status.Value)))
-        {
-            return BadRequest(error: "Invalid priority or status passed.");
-        }
-
         List<Ticket> tickets = await service.GetAllAsync(priority, status, ct);
         List<TicketDto> ticketDtos = [.. tickets.Select(t => t.ToDto())];
         return Ok(ticketDtos);
@@ -50,7 +48,7 @@ public class TicketController(ITicketService service) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(
+    public async Task<IActionResult> Update(
         [FromRoute] int id, [FromBody] UpdateTicketDto dto, CancellationToken ct)
     {
         bool success = await service.UpdateAsync(id, dto, ct);
@@ -64,7 +62,7 @@ public class TicketController(ITicketService service) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(
+    public async Task<IActionResult> Delete(
         [FromRoute] int id, CancellationToken ct)
     {
         bool success = await service.DeleteAsync(id, ct);
@@ -83,16 +81,11 @@ public class TicketController(ITicketService service) : ControllerBase
     {
         (ResolveResult resolveResult, Ticket? ticket) = await service.ResolveAsync(id, ct);
 
-        if (ticket is null || resolveResult is ResolveResult.NotFound)
+        return (resolveResult, ticket) switch
         {
-            return NotFound("Ticket not found.");
-        }
-
-        if (resolveResult is ResolveResult.AlreadyFound)
-        {
-            return Conflict("Ticket is already resolved or is closed.");
-        }
-
-        return Ok(ticket.ToDto());
+            (ResolveResult.Ok, Ticket resolvedTicket) => Ok(resolvedTicket.ToDto()),
+            (ResolveResult.AlreadyResolved, _)        => Conflict("Ticket is already resolved or is closed."),
+            _                                         => NotFound("Ticket not found.")
+        };
     }
 }

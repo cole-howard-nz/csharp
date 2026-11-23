@@ -7,7 +7,7 @@ public enum ResolveResult
 {
   Ok,
   NotFound,
-  AlreadyFound
+  AlreadyResolved
 }
 
 public interface ITicketService

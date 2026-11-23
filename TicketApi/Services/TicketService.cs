@@ -88,7 +88,7 @@ public class TicketService(TicketDbContext db) : ITicketService
 
     if (ticket.Status is TicketStatus.Resolved or TicketStatus.Closed)
     {
-        return (ResolveResult.AlreadyFound, ticket);
+        return (ResolveResult.AlreadyResolved, ticket);
     }
 
     ticket.Status = TicketStatus.Resolved;
