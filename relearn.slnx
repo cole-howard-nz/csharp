@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="GameApi/GameApi.csproj" />
   <Project Path="playground/playground.csproj" />
+  <Project Path="TicketApi/TicketApi.csproj" />
   <Project Path="VideoGameCharacterApi/VideoGameCharacterApi.csproj" />
   <Project Path="WebApi/WebApi.csproj" />
 </Solution>

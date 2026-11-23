@@ -1,15 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TicketApi.Data;
 using TicketApi.Dtos;
 using TicketApi.Mappings;
 using TicketApi.Models;
+using TicketApi.Services;
 
 namespace TicketApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TicketController(TicketDbContext db) : ControllerBase
+public class TicketController(ITicketService service) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TicketDto>>> GetAll(
@@ -20,19 +19,7 @@ public class TicketController(TicketDbContext db) : ControllerBase
             return BadRequest(error: "Invalid priority or status passed.");
         }
 
-        IQueryable<Ticket> query = db.Tickets.AsNoTracking();
-
-        if (priority is not null)
-        {
-            query = query.Where(t => t.Priority == priority);
-        }
-        
-        if (status is not null)
-        {
-            query = query.Where(t => t.Status == status);
-        }
-
-        List<Ticket> tickets = await query.OrderBy(t => t.Id).ToListAsync(ct);
+        List<Ticket> tickets = await service.GetAllAsync(priority, status, ct);
         List<TicketDto> ticketDtos = [.. tickets.Select(t => t.ToDto())];
         return Ok(ticketDtos);
     }
@@ -41,7 +28,7 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult<TicketDto>> GetById(
         [FromRoute] int id, CancellationToken ct)
     {
-        Ticket? ticket = await db.Tickets.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id, ct);
+        Ticket? ticket = await service.GetByIdAsync(id, ct);
 
         if (ticket is null)
         {
@@ -56,10 +43,7 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult<TicketDto>> Create(
         [FromBody] CreateTicketDto dto, CancellationToken ct)
     {
-        Ticket ticket = dto.ToEntity();
-        db.Tickets.Add(ticket);
-        await db.SaveChangesAsync(ct);
-
+        Ticket ticket = await service.CreateAsync(dto, ct);
         TicketDto ticketDto = ticket.ToDto();
 
         return CreatedAtAction(nameof(GetById), new { ticketDto.Id }, ticketDto);
@@ -69,15 +53,12 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult> Update(
         [FromRoute] int id, [FromBody] UpdateTicketDto dto, CancellationToken ct)
     {
-        Ticket? ticket = await db.Tickets.FirstOrDefaultAsync(t => t.Id == id, ct);
+        bool success = await service.UpdateAsync(id, dto, ct);
 
-        if (ticket is null)
+        if (!success)
         {
             return NotFound("Ticket not found.");
         }
-
-        dto.ApplyTo(ticket);
-        await db.SaveChangesAsync(ct);
 
         return NoContent();
     }
@@ -86,15 +67,12 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult> Delete(
         [FromRoute] int id, CancellationToken ct)
     {
-        Ticket? ticket = await db.Tickets.FirstOrDefaultAsync(t => t.Id == id, ct);
+        bool success = await service.DeleteAsync(id, ct);
 
-        if (ticket is null)
+        if (!success)
         {
             return NotFound("Ticket not found.");
         }
-
-        db.Tickets.Remove(ticket);
-        await db.SaveChangesAsync(ct);
 
         return NoContent();
     }
@@ -103,23 +81,18 @@ public class TicketController(TicketDbContext db) : ControllerBase
     public async Task<ActionResult<TicketDto>> Resolve(
         [FromRoute] int id, CancellationToken ct)
     {
-        Ticket? ticket = await db.Tickets.FirstOrDefaultAsync(t => t.Id == id, ct);
+        (ResolveResult resolveResult, Ticket? ticket) = await service.ResolveAsync(id, ct);
 
-        if (ticket is null)
+        if (ticket is null || resolveResult is ResolveResult.NotFound)
         {
             return NotFound("Ticket not found.");
         }
 
-        if (ticket.Status is TicketStatus.Resolved or TicketStatus.Closed)
+        if (resolveResult is ResolveResult.AlreadyFound)
         {
             return Conflict("Ticket is already resolved or is closed.");
         }
 
-        ticket.Status = TicketStatus.Resolved;
-        ticket.ResolvedAt = DateTime.UtcNow;
-        await db.SaveChangesAsync(ct);
-
-        TicketDto ticketDto = ticket.ToDto();
-        return Ok(ticketDto);
+        return Ok(ticket.ToDto());
     }
 }
