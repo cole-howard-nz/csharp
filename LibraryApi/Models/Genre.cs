@@ -2,7 +2,7 @@ namespace LibraryApi.Models;
 
 public enum Genre
 {
-    Ficiton,
+    Fiction,
     NonFiction,
     Science,
     History,

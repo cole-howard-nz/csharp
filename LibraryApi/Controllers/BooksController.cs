@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using LibraryApi.Dtos;
+using LibraryApi.Mappings;
 using LibraryApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,24 +18,36 @@ public class BooksController() : ControllerBase
 
   
   [HttpGet()]
-  public ActionResult<List<Book>> GetAll()
+  public ActionResult<List<BookDto>> GetAll(
+    [FromQuery, EnumDataType(typeof(Genre))] Genre? genre)
   {
-    return Ok(books);
+    List<Book> result = books;
+    if (genre is not null)
+    {
+        result = [.. books.Where(book => book.Genre == genre)];
+    }
+
+    List<BookDto> dtos = [.. result.Select(book => book.ToDto())];
+    return Ok(dtos);
   }
 
   [HttpGet("{id:int}")]
-  public ActionResult<Book> GetById(
+  public ActionResult<BookDto> GetById(
     [FromRoute] int id)
   {
     Book? book = books.FirstOrDefault(book => book.Id == id);
-    return book is not null ? Ok(book) : NotFound("Book not found."); 
+    return book is not null ? Ok(book.ToDto()) : NotFound("Book not found."); 
   }
 
   [HttpPost()]
-  public ActionResult<Book> Create(
-    Book book)
+  public ActionResult<BookDto> Create(
+    CreateBookDto createBookDto)
   {
+    Book book = createBookDto.ToEntity();
+    book.Id = books.Count == 0 ? 1 : books.Max(book => book.Id) + 1;
     books.Add(book);
-    return CreatedAtAction(nameof(GetById), new { book.Id }, book);    
+
+    BookDto bookDto = book.ToDto();
+    return CreatedAtAction(nameof(GetById), new { id = bookDto.Id }, bookDto);    
   }
 }
