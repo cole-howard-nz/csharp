@@ -1,0 +1,14 @@
+@host = http://localhost:5233
+
+### 1. Get all books
+GET {{host}}/api/books/
+
+### 2. Get book with id 1
+GET {{host}}/api/books/1
+
+### 3. Create a new book
+POST {{host}}/api/books/
+Content-Type: application/json
+
+{ "Id": 5, "Title": "Test Book", "Author": "Cole Howard", "Genre": "Fantasy", 
+  "PublishedYear": 2026, "CopiesAvailable": 5, "AddedAt": "2026-01-03T00:00:00Z" }
