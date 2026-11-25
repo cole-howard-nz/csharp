@@ -35,27 +35,66 @@ namespace LibraryApi.Migrations
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("CopiesAvailable")
                         .HasColumnType("int");
 
-                    b.Property<int>("Genre")
-                        .HasColumnType("int");
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("PublishedYear")
                         .HasColumnType("int");
 
                     b.Property<string>("ShelfNote")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AddedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Author = "J.R.R Tolkien",
+                            CopiesAvailable = 3,
+                            Genre = "Fantasy",
+                            PublishedYear = 1937,
+                            ShelfNote = "Fragile spine",
+                            Title = "The Hobbit"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AddedAt = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Author = "Stephen Hawking",
+                            CopiesAvailable = 0,
+                            Genre = "Science",
+                            PublishedYear = 1988,
+                            Title = "A Brief History of Time"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AddedAt = new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Author = "Yuval Noah Harari",
+                            CopiesAvailable = 2,
+                            Genre = "History",
+                            PublishedYear = 2011,
+                            ShelfNote = "Display copy",
+                            Title = "Sapiens"
+                        });
                 });
 #pragma warning restore 612, 618
         }
