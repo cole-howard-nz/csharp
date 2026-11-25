@@ -50,4 +50,36 @@ public class BooksController() : ControllerBase
     BookDto bookDto = book.ToDto();
     return CreatedAtAction(nameof(GetById), new { id = bookDto.Id }, bookDto);    
   }
+
+  [HttpPut("{id:int}")]
+  public ActionResult Update(
+    [FromRoute] int id, UpdateBookDto updateBookDto)
+  {
+    Book? book = books.FirstOrDefault(book => book.Id == id);
+
+    if (book is null)
+    {
+      return NotFound("Book not found.");
+    }
+
+    updateBookDto.ApplyTo(book);
+
+    return NoContent();
+  }
+
+  [HttpDelete("{id:int}")]
+  public ActionResult Delete(
+    [FromRoute] int id)
+  {
+    Book? book = books.FirstOrDefault(b => b.Id == id);
+
+    if (book is null)
+    {
+      return NotFound("Book not found.");
+    }
+
+    books.Remove(book);
+
+    return NoContent();
+  }
 }
