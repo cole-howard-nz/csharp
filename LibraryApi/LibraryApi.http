@@ -13,14 +13,14 @@ GET {{host}}/api/books/?genre=Fantasy
 POST {{host}}/api/books/
 Content-Type: application/json
 
-{ "Id": 99, "Title": "Test BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest BookTest Book", "Author": "Cole Howard", "Genre": "Fantasy", 
+{ "Id": 99, "Title": "Test Book", "Author": "Cole Howard", "Genre": "Fantasy", 
   "PublishedYear": 2026, "CopiesAvailable": 5, "AddedAt": "2026-01-03T00:00:00Z" }
 
 ### 4. Update newly created book
-PUT {{host}}/api/books/5
+PUT {{host}}/api/books/7
 Content-Type: application/json
 
 { "Title": "New Title", "Author": "Chloe Akerblom", "CopiesAvailable": 2 }
 
 ### 5. Delete newly created book
-DELETE {{host}}/api/books/5
+DELETE {{host}}/api/books/7

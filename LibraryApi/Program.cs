@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using LibraryApi.Data;
+using LibraryApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,6 +15,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
+
+builder.Services.AddScoped<IBooksService, BooksService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
