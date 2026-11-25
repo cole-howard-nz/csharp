@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using LibraryApi.Data;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+);
+
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
