@@ -1,61 +1,57 @@
 using System.ComponentModel.DataAnnotations;
+using LibraryApi.Data;
 using LibraryApi.Dtos;
 using LibraryApi.Mappings;
 using LibraryApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BooksController() : ControllerBase
+public class BooksController(LibraryDbContext db) : ControllerBase
 {
-  public static List<Book> books = [
-    new() { Id=1, Title="The Hobbit", Author="J.R.R Tolkien", Genre=Genre.Fantasy, PublishedYear=1937, CopiesAvailable=3, AddedAt=new DateTime(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc), ShelfNote="Fragile spine" },
-    new() { Id=2, Title="A Brief History of Time", Author="Stephen Hawking", Genre=Genre.Science, PublishedYear=1988, CopiesAvailable=0, AddedAt=new DateTime(2026, 01, 02, 0, 0, 0, DateTimeKind.Utc) },
-    new() { Id=3, Title="Sapiens", Author="Yuval Noah Harari", Genre=Genre.History, PublishedYear=2011, CopiesAvailable=2, AddedAt=new DateTime(2026, 01, 03, 0, 0, 0, DateTimeKind.Utc), ShelfNote="Display copy" }
-  ];
-
-  
-  [HttpGet()]
-  public ActionResult<List<BookDto>> GetAll(
-    [FromQuery, EnumDataType(typeof(Genre))] Genre? genre)
+  [HttpGet]
+  public async Task<ActionResult<List<BookDto>>> GetAll(
+    [FromQuery, EnumDataType(typeof(Genre))] Genre? genre, CancellationToken ct)
   {
-    List<Book> result = books;
+    IQueryable<Book> query = db.Books.AsNoTracking(); 
     if (genre is not null)
     {
-        result = [.. books.Where(book => book.Genre == genre)];
+        query = query.Where(book => book.Genre == genre);
     }
 
-    List<BookDto> dtos = [.. result.Select(book => book.ToDto())];
+    List<Book> books = await query.OrderBy(book => book.Id).ToListAsync(ct);
+    List<BookDto> dtos = [.. books.Select(book => book.ToDto()) ];
     return Ok(dtos);
   }
 
   [HttpGet("{id:int}")]
-  public ActionResult<BookDto> GetById(
-    [FromRoute] int id)
+  public async Task<ActionResult<BookDto>> GetById(
+    [FromRoute] int id, CancellationToken ct)
   {
-    Book? book = books.FirstOrDefault(book => book.Id == id);
+    Book? book = await db.Books.AsNoTracking().FirstOrDefaultAsync(book => book.Id == id, ct);
     return book is not null ? Ok(book.ToDto()) : NotFound("Book not found."); 
   }
 
-  [HttpPost()]
-  public ActionResult<BookDto> Create(
-    CreateBookDto createBookDto)
+  [HttpPost]
+  public async Task<ActionResult<BookDto>> Create(
+    CreateBookDto createBookDto, CancellationToken ct)
   {
     Book book = createBookDto.ToEntity();
-    book.Id = books.Count == 0 ? 1 : books.Max(book => book.Id) + 1;
-    books.Add(book);
+    db.Books.Add(book);
+    await db.SaveChangesAsync(ct);
 
     BookDto bookDto = book.ToDto();
     return CreatedAtAction(nameof(GetById), new { id = bookDto.Id }, bookDto);    
   }
 
   [HttpPut("{id:int}")]
-  public ActionResult Update(
-    [FromRoute] int id, UpdateBookDto updateBookDto)
+  public async Task<ActionResult> Update(
+    [FromRoute] int id, UpdateBookDto updateBookDto, CancellationToken ct)
   {
-    Book? book = books.FirstOrDefault(book => book.Id == id);
+    Book? book = await db.Books.FirstOrDefaultAsync(book => book.Id == id, ct);
 
     if (book is null)
     {
@@ -63,22 +59,24 @@ public class BooksController() : ControllerBase
     }
 
     updateBookDto.ApplyTo(book);
+    await db.SaveChangesAsync(ct);
 
     return NoContent();
   }
 
   [HttpDelete("{id:int}")]
-  public ActionResult Delete(
-    [FromRoute] int id)
+  public async Task<ActionResult> Delete(
+    [FromRoute] int id, CancellationToken ct)
   {
-    Book? book = books.FirstOrDefault(b => b.Id == id);
+    Book? book = await db.Books.FirstOrDefaultAsync(book => book.Id == id, ct);
 
     if (book is null)
     {
       return NotFound("Book not found.");
     }
 
-    books.Remove(book);
+    db.Books.Remove(book);
+    await db.SaveChangesAsync(ct);
 
     return NoContent();
   }
